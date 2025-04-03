@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Task1Final.ViewModels"
+             xmlns:local="clr-namespace:Task1Final.Models"
+             x:Class="Task1Final.Views.LibraryBookView"
+             x:DataType="vm:LibraryBookViewModel">
+      
+  <UserControl.DataContext>
+    <vm:LibraryBookViewModel />
+  </UserControl.DataContext>
+  
+  <StackPanel Margin="10">
+    <TextBlock Text="Информация о книге" FontSize="16" FontWeight="Bold" Margin="5" />
+    
+    <TextBlock Text="Название:" FontWeight="Bold" Margin="5" />
+    <TextBlock Text="{Binding Title}" Margin="5" />
+
+    <TextBlock Text="Код учёта:" FontWeight="Bold" Margin="5" />
+    <TextBlock Text="{Binding InventoryCode}" Margin="5" />
+
+    <TextBlock Text="Авторы:" FontWeight="Bold" Margin="5" />
+    <ItemsControl ItemsSource="{Binding Authors}" Margin="5">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding}" />
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    <TextBlock Text="Количество страниц:" FontWeight="Bold" Margin="5" />
+    <TextBlock Text="{Binding Pages}" Margin="5" />
+
+    <TextBlock Text="Тематический раздел:" FontWeight="Bold" Margin="5" />
+    <TextBlock Text="{Binding Section}" Margin="5" />
+
+    <TextBlock Text="Состояние книги:" FontWeight="Bold" Margin="5" />
+    <TextBlock Text="{Binding CurrentState}" Margin="5" />
+
+    <StackPanel Orientation="Horizontal" Margin="10">
+      <Button Content="В фонде" Command="{Binding ChangeStateCommand}" 
+              CommandParameter="{x:Static local:BookState.InStock}" Margin="5" />
+      <Button Content="Выдана" Command="{Binding ChangeStateCommand}" 
+              CommandParameter="{x:Static local:BookState.Issued}" Margin="5" />
+      <Button Content="На реставрации" Command="{Binding ChangeStateCommand}" 
+              CommandParameter="{x:Static local:BookState.UnderRestoration}" Margin="5" />
+    </StackPanel>
+
+    <TextBlock Text="Введите новый код учёта:" FontWeight="Bold" Margin="5" />
+    <StackPanel Orientation="Horizontal" Margin="10">
+      <TextBox Text="{Binding NewInventoryCode}" Margin="5" Width="200" />
+      <Button Content="Обновить код учёта" Command="{Binding UpdateInventoryCodeCommand}" Margin="5" />
+    </StackPanel>
+  </StackPanel>
+</UserControl>
