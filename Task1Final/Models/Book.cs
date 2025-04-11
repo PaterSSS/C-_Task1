@@ -3,24 +3,20 @@
 namespace Task1Final.Models;
 
 
-public class LibraryBook
+public class LibraryBook(
+    string inventoryCode,
+    string title,
+    List<string> authors,
+    int pages,
+    string section,
+    BookState initialState)
 {
-    public string InventoryCode { get; private set; }
-    public string Title { get;  }
-    public List<string> Authors { get;  }
-    public int Pages { get;  }
-    public string Section { get;  }
-    public BookState CurrentState { get; private set; }
-
-    public LibraryBook(string inventoryCode, string title, List<string> authors, int pages, string section, BookState initialState)
-    {
-        InventoryCode = inventoryCode;
-        Title = title;
-        Authors = authors;
-        Pages = pages;
-        Section = section;
-        CurrentState = initialState;
-    }
+    public string InventoryCode { get; private set; } = inventoryCode;
+    public string Title { get;  } = title;
+    public List<string> Authors { get;  } = authors;
+    public int Pages { get;  } = pages;
+    public string Section { get;  } = section;
+    public BookState CurrentState { get; private set; } = initialState;
 
     public void ChangeState(BookState newState)
     {

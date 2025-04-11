@@ -4,51 +4,91 @@
              xmlns:local="clr-namespace:Task1Final.Models"
              x:Class="Task1Final.Views.LibraryBookView"
              x:DataType="vm:LibraryBookViewModel">
-      
+  
   <UserControl.DataContext>
     <vm:LibraryBookViewModel />
   </UserControl.DataContext>
   
-  <StackPanel Margin="10">
-    <TextBlock Text="Информация о книге" FontSize="16" FontWeight="Bold" Margin="5" />
-    
-    <TextBlock Text="Название:" FontWeight="Bold" Margin="5" />
-    <TextBlock Text="{Binding Title}" Margin="5" />
+  <ScrollViewer>
+    <StackPanel Margin="10" Spacing="5">
+      <!-- Секция создания новой книги -->
+      <Border BorderBrush="Gray" BorderThickness="1" Padding="10" Margin="0,0,0,20">
+        <StackPanel Spacing="5">
+          <TextBlock Text="Создать новую книгу" FontSize="16" FontWeight="Bold"/>
+          
+          <TextBox Watermark="Название" Text="{Binding NewTitle}"/>
+          <TextBox Watermark="Код учёта" Text="{Binding NewInventoryCode}"/>
+          <TextBox Watermark="Авторы (через запятую)" Text="{Binding NewAuthorsInput}"/>
+          <TextBox Watermark="Количество страниц"
+                   Text="{Binding NewPages, StringFormat='{}{0}'}">
+            <TextBox.Styles>
+              <Style Selector="TextBox:invalid">
+                <Setter Property="Background" Value="#FFF0F0"/>
+                <Setter Property="BorderBrush" Value="Red"/>
+              </Style>
+            </TextBox.Styles>
+          </TextBox>
+          <TextBox Watermark="Тематический раздел" Text="{Binding NewSection}"/>
+          
+          <ComboBox SelectedItem="{Binding NewState}" 
+                    ItemsSource="{x:Static local:BookStateInfo.AllStates}"
+                    SelectedValue="{Binding NewState}"
+                    DisplayMemberBinding="{Binding}"/>
+          
+          <Button Content="Создать новую книгу" 
+                  Command="{Binding CreateNewBookCommand}"
+                  HorizontalAlignment="Stretch"
+                  Margin="0,10"/>
+        </StackPanel>
+      </Border>
 
-    <TextBlock Text="Код учёта:" FontWeight="Bold" Margin="5" />
-    <TextBlock Text="{Binding InventoryCode}" Margin="5" />
+      <!-- Секция отображения текущей книги -->
+      <TextBlock Text="Текущая книга" FontSize="16" FontWeight="Bold"/>
+      
+      <TextBlock Text="Название:" FontWeight="Bold"/>
+      <TextBlock Text="{Binding Title}"/>
 
-    <TextBlock Text="Авторы:" FontWeight="Bold" Margin="5" />
-    <ItemsControl ItemsSource="{Binding Authors}" Margin="5">
-      <ItemsControl.ItemTemplate>
-        <DataTemplate>
-          <TextBlock Text="{Binding}" />
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
+      <TextBlock Text="Код учёта:" FontWeight="Bold"/>
+      <TextBlock Text="{Binding InventoryCode}"/>
 
-    <TextBlock Text="Количество страниц:" FontWeight="Bold" Margin="5" />
-    <TextBlock Text="{Binding Pages}" Margin="5" />
+      <TextBlock Text="Авторы:" FontWeight="Bold"/>
+      <ItemsControl ItemsSource="{Binding Authors}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding}"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
 
-    <TextBlock Text="Тематический раздел:" FontWeight="Bold" Margin="5" />
-    <TextBlock Text="{Binding Section}" Margin="5" />
+      <TextBlock Text="Количество страниц:" FontWeight="Bold"/>
+      <TextBlock Text="{Binding Pages}"/>
 
-    <TextBlock Text="Состояние книги:" FontWeight="Bold" Margin="5" />
-    <TextBlock Text="{Binding CurrentState}" Margin="5" />
+      <TextBlock Text="Тематический раздел:" FontWeight="Bold"/>
+      <TextBlock Text="{Binding Section}"/>
 
-    <StackPanel Orientation="Horizontal" Margin="10">
-      <Button Content="В фонде" Command="{Binding ChangeStateCommand}" 
-              CommandParameter="{x:Static local:BookState.InStock}" Margin="5" />
-      <Button Content="Выдана" Command="{Binding ChangeStateCommand}" 
-              CommandParameter="{x:Static local:BookState.Issued}" Margin="5" />
-      <Button Content="На реставрации" Command="{Binding ChangeStateCommand}" 
-              CommandParameter="{x:Static local:BookState.UnderRestoration}" Margin="5" />
+      <TextBlock Text="Состояние книги:" FontWeight="Bold"/>
+      <TextBlock Text="{Binding CurrentState}"/>
+
+      <!-- Существующие элементы управления -->
+      <StackPanel Orientation="Horizontal" Margin="0,10" Spacing="5">
+        <Button Content="В фонде" 
+                Command="{Binding ChangeStateCommand}" 
+                CommandParameter="{x:Static local:BookState.InStock}"/>
+        <Button Content="Выдана" 
+                Command="{Binding ChangeStateCommand}" 
+                CommandParameter="{x:Static local:BookState.Issued}"/>
+        <Button Content="На реставрации" 
+                Command="{Binding ChangeStateCommand}" 
+                CommandParameter="{x:Static local:BookState.UnderRestoration}"/>
+      </StackPanel>
+
+      <StackPanel Orientation="Horizontal" Spacing="5">
+        <TextBox Watermark="Новый код учёта" 
+                 Text="{Binding NewInventoryCode}" 
+                 Width="200"/>
+        <Button Content="Обновить код" 
+                Command="{Binding UpdateInventoryCodeCommand}"/>
+      </StackPanel>
     </StackPanel>
-
-    <TextBlock Text="Введите новый код учёта:" FontWeight="Bold" Margin="5" />
-    <StackPanel Orientation="Horizontal" Margin="10">
-      <TextBox Text="{Binding NewInventoryCode}" Margin="5" Width="200" />
-      <Button Content="Обновить код учёта" Command="{Binding UpdateInventoryCodeCommand}" Margin="5" />
-    </StackPanel>
-  </StackPanel>
+  </ScrollViewer>
 </UserControl>
